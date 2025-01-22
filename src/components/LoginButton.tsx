@@ -9,7 +9,7 @@ const LoginButton = () => {
       {session ? 
       ( 
         <>
-          <h1>Bem-vindo!</h1>
+          <h1>Bem-vindo! { session.user?.name }</h1>
           <button onClick={() => signOut()}>Sair</button>
         </>
       ) : (
