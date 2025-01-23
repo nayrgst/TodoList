@@ -27,9 +27,11 @@ export default function RootLayout({
       <html lang="en">
         <SessionWrapper>
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-black dark:text-white`}
           >
-            {children}
+            <div className="max-w-lg m-auto" >
+              { children } 
+            </div>
           </body>
         </SessionWrapper>
       </html>
