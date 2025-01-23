@@ -15,7 +15,9 @@ const Dashboard = () => {
       ) : (
         <>
           <h1>Você não está logado!</h1>
-          <button onClick={() => signIn()}>Entrar</button>
+          <button onClick={() => signIn("google")}>Google</button>
+          <button onClick={() => signIn("github")}>Github</button>
+          <button onClick={() => signIn("linkedin")}>Linkedin</button>
         </> 
 
       )}

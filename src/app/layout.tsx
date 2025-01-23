@@ -1,17 +1,9 @@
 import SessionWrapper from "@/components/SessionWrapper";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,12 +18,16 @@ export default function RootLayout({
   return (
       <html lang="en">
         <SessionWrapper>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-black dark:text-white`}
-          >
-            <div className="max-w-lg m-auto" >
-              { children } 
-            </div>
+          <body>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              { children }
+              <Toaster />
+            </ThemeProvider>
           </body>
         </SessionWrapper>
       </html>
