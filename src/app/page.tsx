@@ -1,10 +1,19 @@
 import Dashboard from "@/components/Dashboard";
+import { redirect } from "next/navigation";
+import { auth } from "../../auth";
 
+export default async function Page() {
+  const session = await auth();
 
-export default function Page() {
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
-    <>
-      <Dashboard />
-    </>
+    <main className="container flex items-center justify-center py-5">
+      <section>
+        <Dashboard />
+      </section>
+    </main>
   );
 }

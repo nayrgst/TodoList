@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/RegisterForm";
+import LoginForm from "@/components/LoginForm";
 import { redirect } from "next/navigation";
 import { auth } from "../../../auth";
 
@@ -11,8 +11,8 @@ const page = async () => {
 
   return (
     <section className="m-auto container h-screen flex items-center justify-center">
-      <div className="w-[800px]">
-        <RegisterForm />
+      <div className="w-[1000px]">
+        <LoginForm />
       </div>
     </section>
   );

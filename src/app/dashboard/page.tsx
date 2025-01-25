@@ -1,18 +1,18 @@
-import RegisterForm from "@/components/RegisterForm";
+import Dashboard from "@/components/Dashboard";
 import { redirect } from "next/navigation";
 import { auth } from "../../../auth";
 
 const page = async () => {
   const session = await auth();
 
-  if (session) {
-    redirect("/dashboard");
+  if (!session) {
+    redirect("/login");
   }
 
   return (
-    <section className="m-auto container h-screen flex items-center justify-center">
+    <section className="container h-screen flex items-center justify-center">
       <div className="w-[800px]">
-        <RegisterForm />
+        <Dashboard />
       </div>
     </section>
   );
