@@ -1,9 +1,19 @@
-import LoginButton from "@/components/LoginButton";
+import Dashboard from "@/components/Dashboard";
+import { redirect } from "next/navigation";
+import { auth } from "../../auth";
 
-export default function Home() {
+export default async function Page() {
+  const session = await auth();
+
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
-    <>
-      <LoginButton />
-    </>
+    <main className="container flex items-center justify-center py-5">
+      <section>
+        <Dashboard />
+      </section>
+    </main>
   );
 }
