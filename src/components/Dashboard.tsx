@@ -1,29 +1,21 @@
-import { auth, signOut } from "@/auth";
+"use client";
 import PageTransition from "@/components/PageTransition";
-import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
+const Dashboard = () => {
+  const session = useSession();
 
-const Dashboard = async () => {
-  const session = await auth();
-  const image = session?.user?.image;
+  const logout = () => {
+    signOut();
+  };
 
   return (
     <PageTransition>
       <section>
-        <Image
-          src={image ?? "/default-image.svg"}
-          alt="Imagem de usuário"
-          width="500"
-          height="500"
-        />
+        {JSON.stringify(session)}
 
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: "/auth/login" });
-          }}
-        >
-          <button type="submit">Sair</button>
-        </form>
+        <button onClick={logout} type="submit">
+          Sair
+        </button>
         <p>Bem-vindo ao seu painel de controle!</p>
       </section>
     </PageTransition>
