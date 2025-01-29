@@ -10,16 +10,6 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 
-export const getUserByid = async (id: string) => {
-  try {
-    const user = await db.user.findUnique({ where: { id } });
-
-    return user;
-  } catch {
-    return null;
-  }
-};
-
 export const getVerificationTokenByEmail = async (email: string) => {
   try {
     const verificationToken = await db.vericationToken.findFirst({
