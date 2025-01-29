@@ -5,7 +5,6 @@ import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { getUserByEmail } from "../data/user";
-import { generatedVerificationToken } from "@/lib/tokens";
 
 export const login = async (values: z.infer<typeof loginSchema>) => {
   const validateFilds = loginSchema.safeParse(values);
@@ -20,14 +19,6 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
 
   if (!user || !user.email || !user.password) {
     return { error: "Este E-mail não existe!" };
-  }
-
-  if (!user.emailVerified) {
-    await generatedVerificationToken(user.email);
-
-    return {
-      success: "Link de confirmaçao enviado para o seu e-mail.",
-    };
   }
 
   try {
@@ -48,6 +39,8 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
     }
     throw error;
   }
+
+  return { success: "Entrando..." };
 };
 
 export const loginWithProvider = async (
