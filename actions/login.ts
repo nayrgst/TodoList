@@ -18,7 +18,7 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
   const user = await getUserByEmail(email);
 
   if (!user || !user.email || !user.password) {
-    return { error: "Este E-mail não existe!" };
+    return { error: "Este e-mail não existe!" };
   }
 
   try {
