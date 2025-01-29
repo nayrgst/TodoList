@@ -2,7 +2,7 @@
 import PageTransition from "@/components/PageTransition";
 import { signOut, useSession } from "next-auth/react";
 const Dashboard = () => {
-  const session = useSession();
+  const { data: session } = useSession();
 
   const logout = () => {
     signOut();
