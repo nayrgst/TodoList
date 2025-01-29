@@ -1,41 +1,32 @@
-"use client";
-import { logout } from "@/app/api/auth/login/route"; // Importe a função de logout
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { toast, Toaster } from "sonner";
-import PageTransition from "./PageTransition";
+import { auth, signOut } from "@/auth";
+import PageTransition from "@/components/PageTransition";
+import Image from "next/image";
 
-export default function Dashboard() {
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    const response = await logout();
-
-    if (response?.error) {
-      toast.error("Erro", {
-        description: response.error, // Exibe a mensagem de erro
-      });
-    } else {
-      toast.success("Logout bem-sucedido!", {
-        description: "Redirecionando para a página de login...",
-      });
-      router.push("/login"); // Redireciona para a página de login após o logout
-    }
-  };
+const Dashboard = async () => {
+  const session = await auth();
+  const image = session?.user?.image;
 
   return (
     <PageTransition>
-      <div>
-        <h1>Dashboard</h1>
-        <p>Bem-vindo ao seu painel de controle!</p>
-        <Button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-all duration-300"
+      <section>
+        <Image
+          src={image ?? "/default-image.svg"}
+          alt="Imagem de usuário"
+          width="500"
+          height="500"
+        />
+
+        <form
+          action={async () => {
+            "use server";
+            await signOut({ redirectTo: "/auth/login" });
+          }}
         >
-          Sair
-        </Button>
-        <Toaster />
-      </div>
+          <button type="submit">Sair</button>
+        </form>
+        <p>Bem-vindo ao seu painel de controle!</p>
+      </section>
     </PageTransition>
   );
-}
+};
+export default Dashboard;
