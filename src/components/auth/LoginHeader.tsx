@@ -1,5 +1,3 @@
-// import { Poppins } from "next/font/google";
-// import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 import Logo from "@/public/logo.svg";
@@ -7,8 +5,6 @@ import Logo from "@/public/logo.svg";
 interface LoginHeaderProps {
   label?: string;
 }
-
-// const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
 export const LoginHeader = ({ label }: LoginHeaderProps) => {
   return (
