@@ -6,7 +6,7 @@ import Linkedin from "next-auth/providers/linkedin";
 import { compare } from "bcrypt-ts";
 
 import { loginSchema } from "@/schemas/user";
-import { getUserByEmail } from "../data/user";
+import { getUserByEmail } from "@/data/user";
 
 export default {
   providers: [

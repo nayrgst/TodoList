@@ -1,8 +1,8 @@
-import { ThemeProvider } from "@/components/theme-provider";
+import { SessionProvider } from "next-auth/react";
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "@/components/theme-provider";
 import { auth } from "@/auth";
 
 export const metadata: Metadata = {

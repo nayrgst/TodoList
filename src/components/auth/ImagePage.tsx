@@ -1,5 +1,5 @@
 import Image from "next/image";
-import backgroundImage from "@/../public/background.jpg";
+import backgroundImage from "@/public/background.jpg";
 
 export const ImagePage = () => {
   return (

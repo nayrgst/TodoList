@@ -1,7 +1,9 @@
 "use client";
-import PageTransition from "@/components/PageTransition";
 import { useSession } from "next-auth/react";
-import { logout } from "../../actions/logout";
+
+import PageTransition from "@/components/PageTransition";
+import { logout } from "@/actions/logout";
+
 const Dashboard = () => {
   const session = useSession();
 

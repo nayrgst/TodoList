@@ -1,6 +1,6 @@
+import PageTransition from "@/components/PageTransition";
 import { LoginButon } from "@/components/auth/LoginButton";
 import { Button } from "@/components/ui/button";
-import PageTransition from "@/components/PageTransition";
 import { CardWrapper } from "@/components/auth/CardWrapper";
 
 export default async function Home() {
