@@ -1,19 +1,20 @@
 "use client";
 import PageTransition from "@/components/PageTransition";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { logout } from "../../actions/logout";
 const Dashboard = () => {
-  const { data: session } = useSession();
+  const session = useSession();
 
-  const logout = () => {
-    signOut();
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (
     <PageTransition>
       <section>
-        {JSON.stringify(session)}
+        <pre>{JSON.stringify(session?.data?.user)}</pre>
 
-        <button onClick={logout} type="submit">
+        <button onClick={handleLogout} type="submit">
           Sair
         </button>
         <p>Bem-vindo ao seu painel de controle!</p>
