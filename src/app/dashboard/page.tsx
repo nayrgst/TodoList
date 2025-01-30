@@ -1,11 +1,14 @@
 "use client";
 
 import PageTransition from "@/components/PageTransition";
+import { InputTodo } from "@/app/dashboard/_components/InputTodo";
 
 const Dashboard = () => {
   return (
     <PageTransition>
-      <section>dashboard</section>
+      <section>
+        <InputTodo />
+      </section>
     </PageTransition>
   );
 };
