@@ -1,5 +1,12 @@
 "use client";
-import { login } from "@/../actions/login";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Lock, Mail } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
+
+import { login } from "@/actions/login";
 import {
   Form,
   FormControl,
@@ -10,17 +17,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/schemas/user";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Mail } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import PageTransition from "../PageTransition";
+import PageTransition from "@/components/PageTransition";
 import { CardWrapper } from "@/components/auth/CardWrapper";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/FormErrors";
 import { FormSucess } from "@/components/FormSucess";
-import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
