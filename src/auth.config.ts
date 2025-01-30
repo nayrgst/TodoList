@@ -35,8 +35,6 @@ export default {
           const vsfPassword = await compare(password, user.password);
 
           if (vsfPassword) {
-            console.log("AUTORIZADO", user);
-
             return user;
           }
         }

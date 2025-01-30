@@ -1,13 +1,13 @@
-import Dashboard from "@/components/Dashboard";
+"use client";
 
-const page = async () => {
+import PageTransition from "@/components/PageTransition";
+
+const Dashboard = () => {
   return (
-    <section className="container h-screen flex items-center justify-center">
-      <div className="w-[800px]">
-        <Dashboard />
-      </div>
-    </section>
+    <PageTransition>
+      <section>dashboard</section>
+    </PageTransition>
   );
 };
 
-export default page;
+export default Dashboard;

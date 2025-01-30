@@ -1,18 +1,16 @@
-// import { Poppins } from "next/font/google";
-// import { cn } from "@/lib/utils";
 import Image from "next/image";
+
+import Logo from "@/public/logo.svg";
 
 interface LoginHeaderProps {
   label?: string;
 }
 
-// const font = Poppins({ subsets: ["latin"], weight: ["600"] });
-
 export const LoginHeader = ({ label }: LoginHeaderProps) => {
   return (
     <section className="flex w-full flex-col items-center justify-center gap-y-4">
       <Image
-        src="../../logo.svg"
+        src={Logo}
         alt="Logo da aplicação"
         width="350"
         height="150"
