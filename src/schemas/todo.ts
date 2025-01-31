@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const FormSchema = z.object({
-  username: z.string().min(1, {
-    message: "Escreva uma tarefa!",
+export const AddTodoSchema = z.object({
+  description: z.string().min(1, {
+    message: "A tarefa não pode estar vazia!",
   }),
 });

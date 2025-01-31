@@ -42,10 +42,8 @@ model Account {
 model Todo {
   id         String   @id @default(cuid())
   userId     String   @map("user_id")
-  title      String
-  completed  Boolean @default(false)
   description String?
-  category String?
+  completed  Boolean @default(false)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
 }
