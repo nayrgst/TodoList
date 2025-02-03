@@ -2,6 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Loader } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,9 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { AddTodoSchema } from "@/schemas/todo";
+import { TodoSchema } from "@/schemas/todo";
 import { toast, Toaster } from "sonner";
-import { todo } from "@/actions/todo";
+import { createTodo } from "@/actions/todo";
+import { useState } from "react";
 
 interface InputTodoProps {
   addTodo: (todo: {
@@ -24,45 +26,62 @@ interface InputTodoProps {
   }) => void;
 }
 
+const formatDateTime = () => {
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+  const formattedTime = now.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  return { formattedDate, formattedTime };
+};
+
 export const InputTodo = ({ addTodo }: InputTodoProps) => {
-  const form = useForm<z.infer<typeof AddTodoSchema>>({
-    resolver: zodResolver(AddTodoSchema),
+  const [loading, setLoading] = useState(false);
+
+  const form = useForm<z.infer<typeof TodoSchema>>({
+    resolver: zodResolver(TodoSchema),
     defaultValues: {
       description: "",
     },
     mode: "onChange",
   });
 
-  const onSubmit = async (values: z.infer<typeof AddTodoSchema>) => {
-    const now = new Date();
-    const formattedDate = now.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-    const formattedTime = now.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+  const onSubmit = async (values: z.infer<typeof TodoSchema>) => {
+    setLoading(true);
+    const { formattedDate, formattedTime } = formatDateTime();
 
-    const result = await todo(values);
+    try {
+      const result = await createTodo(values);
 
-    if (result?.success && result.todo) {
-      addTodo({
-        id: result.todo.id,
-        description: result.todo.description,
-        completed: result.todo.completed || false,
-      });
+      if (result?.success && result.todo) {
+        addTodo({
+          id: result.todo.id,
+          description: result.todo.description,
+          completed: result.todo.completed || false,
+        });
 
-      toast("Tarefa criada com sucesso!", {
-        description: `Data: ${formattedDate} - Hora: ${formattedTime}`,
-      });
-      form.reset();
-    } else {
-      toast(result?.error || "Erro ao criar a tarefa.", {
+        toast("✅ TAREFA CRIADA COM SUCESSO!", {
+          description: `Data: ${formattedDate} - Hora: ${formattedTime}`,
+        });
+        form.reset();
+      } else {
+        toast(result?.error || "Erro ao criar a tarefa.", {
+          description: "Tente novamente...",
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao criar a tarefa:", error);
+      toast("Erro ao criar a tarefa.", {
         description: "Tente novamente...",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,6 +102,7 @@ export const InputTodo = ({ addTodo }: InputTodoProps) => {
                     className="bg-black h-10"
                     aria-label="Digite uma tarefa"
                     aria-invalid={!!form.formState.errors.description}
+                    aria-describedby="description-error"
                   />
                 </FormControl>
               </FormItem>
@@ -90,8 +110,21 @@ export const InputTodo = ({ addTodo }: InputTodoProps) => {
           />
         </section>
         <section className="flex justify-end p-3">
-          <Button type="submit" variant={"default"} size={"sm"}>
-            Adicionar
+          <Button
+            type="submit"
+            variant="default"
+            size="sm"
+            disabled={loading}
+            aria-label={loading ? "Adicionando tarefa..." : "Adicionar tarefa"}
+          >
+            {loading ? (
+              <span className="flex items-center gap-x-1">
+                <Loader className="animate-spin" />
+                Adicionando...
+              </span>
+            ) : (
+              "Adicionar"
+            )}
           </Button>
         </section>
         <Toaster theme="dark" />

@@ -26,6 +26,20 @@ const Dashboard = () => {
     }
   };
 
+  const updateTodo = (id: string, completed: boolean, description?: string) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id
+          ? { ...todo, completed, description: description ?? todo.description }
+          : todo,
+      ),
+    );
+  };
+
+  const deleteTodoState = (id: string) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
+
   useEffect(() => {
     fetchTodos();
   }, []);
@@ -41,7 +55,11 @@ const Dashboard = () => {
           <InputTodo addTodo={addTodo} />
         </div>
         <div>
-          <Todolist todos={todos} />
+          <Todolist
+            todos={todos}
+            updateTodo={updateTodo}
+            deleteTodoState={deleteTodoState}
+          />
         </div>
       </section>
     </PageTransition>

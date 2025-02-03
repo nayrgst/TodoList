@@ -1,52 +1,107 @@
 "use server";
 
 import * as z from "zod";
-
-import { AddTodoSchema } from "@/schemas/todo";
+import { TodoSchema } from "@/schemas/todo";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
 
-export const todo = async (values: z.infer<typeof AddTodoSchema>) => {
+const getUserId = async () => {
+  const session = await auth();
+  return session?.user?.id || null;
+};
+
+export const createTodo = async (values: z.infer<typeof TodoSchema>) => {
   try {
-    const validateFilds = AddTodoSchema.safeParse(values);
-    const session = await auth();
+    const userId = await getUserId();
+    if (!userId) return { error: "Usuário não identificado." };
 
-    if (!validateFilds.success) {
+    const validatedFields = TodoSchema.safeParse(values);
+    if (!validatedFields.success)
       return { error: "A tarefa não pode estar vazia." };
-    }
 
-    const { description } = validateFilds.data;
-    const user = await db.user.findUnique({ where: { id: session?.user?.id } });
-
-    if (!user) {
-      return { error: "Usuário não existe." };
-    }
+    const { description } = validatedFields.data;
 
     const newTodo = await db.todo.create({
-      data: {
-        userId: user?.id,
-        description: description,
-      },
+      data: { userId, description },
     });
 
     return { success: "Tarefa adicionada com sucesso!", todo: newTodo };
   } catch (error) {
-    if (error instanceof Error) {
-      return { error: "Falha ao criar a tarefa!" };
-    }
+    console.error("Erro ao adicionar a tarefa:", error);
+    return { error: "Falha ao adicionar a tarefa!" };
   }
 };
 
 export const getTodos = async () => {
-  const session = await auth();
+  try {
+    const userId = await getUserId();
+    if (!userId) return { error: "Usuário não identificado." };
 
-  const user = await db.user.findUnique({ where: { id: session?.user?.id } });
+    const todos = await db.todo.findMany({ where: { userId } });
 
-  if (!user) {
-    return { error: "Usuário não existe." };
+    return { success: "Tarefas carregadas com sucesso!", todos };
+  } catch (error) {
+    console.error("Erro ao carregar as tarefas:", error);
+    return { error: "Falha ao carregar as tarefas!" };
   }
+};
 
-  const todos = await db.todo.findMany({ where: { userId: user?.id } });
+export const updateCheckedTodo = async (id: string, completed: boolean) => {
+  try {
+    const userId = await getUserId();
+    if (!userId) return { error: "Usuário não identificado." };
 
-  return { success: "Tarefas carregadas com sucesso!", todos: todos };
+    const existingTodo = await db.todo.findUnique({ where: { id } });
+    if (!existingTodo) return { error: "Tarefa não encontrada!" };
+    if (existingTodo.userId !== userId) return { error: "Acesso negado!" };
+
+    const updatedTodo = await db.todo.update({
+      where: { id },
+      data: { completed },
+    });
+
+    return { success: "Tarefa concluída com sucesso!", todo: updatedTodo };
+  } catch (error) {
+    console.error("Erro ao concluir a tarefa:", error);
+    return { error: "Falha ao concluir a tarefa!" };
+  }
+};
+
+export const updateTextTodo = async (id: string, description: string) => {
+  try {
+    const userId = await getUserId();
+    if (!userId) return { error: "Usuário não identificado." };
+
+    const existingTodo = await db.todo.findUnique({ where: { id } });
+    if (!existingTodo) return { error: "Tarefa não encontrada!" };
+    if (existingTodo.userId !== userId) return { error: "Acesso negado!" };
+
+    const updatedTodo = await db.todo.update({
+      where: { id },
+      data: { description },
+    });
+
+    return { success: "Tarefa atualizada com sucesso!", todo: updatedTodo };
+  } catch (error) {
+    console.error("Erro ao atualizar a tarefa:", error);
+    return { error: "Falha ao atualizar a tarefa!" };
+  }
+};
+
+export const deleteTodo = async (id: string) => {
+  try {
+    const userId = await getUserId();
+    if (!userId) return { error: "Usuário não identificado." };
+
+    const existingTodo = await db.todo.findUnique({ where: { id } });
+    if (!existingTodo) return { error: "Tarefa não encontrada!" };
+    if (existingTodo.userId !== userId) return { error: "Acesso negado!" };
+
+    await db.todo.delete({ where: { id } });
+
+    return { success: "Tarefa excluída com sucesso!" };
+  } catch (error) {
+    console.error("Erro ao excluir a tarefa:", error);
+    return { error: "Falha ao excluir a tarefa!" };
+  }
 };
