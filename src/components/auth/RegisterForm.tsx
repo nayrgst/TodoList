@@ -21,6 +21,7 @@ import { CardWrapper } from "@/components/auth/CardWrapper";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/FormErrors";
 import { FormSucess } from "@/components/FormSucess";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -57,6 +58,8 @@ export const RegisterForm = () => {
     });
   }
 
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
   return (
     <>
       <PageTransition>
@@ -65,8 +68,8 @@ export const RegisterForm = () => {
           backButtonLabel="Já tem uma conta?"
           backButtonHref="/auth/login"
           showSocialButtons
-          showImageBg
-          className="w-[1000px]"
+          showImageBg={!isSmallScreen}
+          className={isSmallScreen ? "w-full" : "w-[900px]"}
         >
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
