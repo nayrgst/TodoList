@@ -6,7 +6,7 @@ import { UserButton } from "@/components/auth/UserButton";
 
 export const Navbar = () => {
   return (
-    <nav className="bg-backBlack flex justify-between items-center shadow-sm">
+    <nav className="bg-black flex justify-between items-center shadow-sm">
       <section className="flex gap-x-2 justify-center items-center w-full ms-14">
         <Image
           src={Logo}
