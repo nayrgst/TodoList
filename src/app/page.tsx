@@ -4,10 +4,7 @@ import { CardWrapper } from "@/components/auth/CardWrapper";
 
 export default async function Home() {
   return (
-    <main
-      className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-    from-purpou to-backBlack"
-    >
+    <main className="flex h-full flex-col items-center justify-center bg-background">
       <CardWrapper
         headerLabel="Organize seu dia, conquiste seus objetivos!"
         className="w-[500px]"

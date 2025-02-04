@@ -6,7 +6,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <section className="w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purpou to-backBlack">
+    <section className="w-full h-full bg-background">
       <Navbar />
       {children}
     </section>
