@@ -23,6 +23,9 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/FormErrors";
 import { FormSucess } from "@/components/FormSucess";
 
+// Importe o hook criado
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -55,6 +58,8 @@ export const LoginForm = () => {
       ? "E-mail já cadastrado em outra conta!"
       : "";
 
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
   return (
     <>
       <PageTransition>
@@ -63,8 +68,8 @@ export const LoginForm = () => {
           backButtonLabel="Não tem uma conta?"
           backButtonHref="/auth/register"
           showSocialButtons
-          showImageBg
-          className="w-[900px]"
+          showImageBg={!isSmallScreen}
+          className={isSmallScreen ? "w-full" : "w-[900px]"}
         >
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
