@@ -22,8 +22,6 @@ import { CardWrapper } from "@/components/auth/CardWrapper";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/FormErrors";
 import { FormSucess } from "@/components/FormSucess";
-
-// Importe o hook criado
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export const LoginForm = () => {
